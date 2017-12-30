@@ -6,7 +6,7 @@
  */
 'use strict';
 
-var warning = require('fbjs/lib/warning');
+import warning from 'fbjs/lib/warning';
 
 var MultiShare = {
   test: function() {

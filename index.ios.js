@@ -4,15 +4,18 @@
  * @flow
  */
 
-const Platform = require('Platform');
+import {
+  Platform,
+  processColor,
+  NativeModules,
+} from 'react-native';
 
-const invariant = require('fbjs/lib/invariant');
-const processColor = require('processColor');
+import invariant from 'fbjs/lib/invariant';
 
 const {
   MultiShare: NativeMultiShare,
   ShareModule
-} = require('NativeModules');
+} = NativeModules;
 
 class MultiShare {
 
