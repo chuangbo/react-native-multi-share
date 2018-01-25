@@ -18,10 +18,42 @@ async function onShare() {
 }
 ```
 
+### Common Issues
+
+#### Does not work android
+
+The images has to be copy to external storage, other apps cannot read your document folder.
+
+```js
+// Copy the files to the external storage
+import RNFetchBlob from 'react-native-fetch-blob';
+
+const fs = RNFetchBlob.fs;
+
+// Android Only
+async function getExternalCacheDirAsync() {
+  const dir = `${fs.dirs.SDCardApplicationDir}/cache`;
+  if (!await fs.isDir(dir)) {
+    await fs.mkdir(dir);
+  }
+  return dir;
+}
+
+export async function copyToExternalCacheDirAsync(from) {
+  const dir = await getExternalCacheDirAsync();
+  const filename = from.replace(/^.*[\\/]/, '');
+  const to = `${dir}/${filename}`;
+  await RNFetchBlob.fs.cp(from, to);
+  return to;
+}
+
+```
+
 ### Todos
 
-- [ ] Test on react-native
+- [x] Test on react-native
 - [x] Test on detached expo.io project
 - [x] iOS
-- [ ] Android
+- [x] Android
 - [ ] Pull request to react-native
+- [ ] Test using images along with other fields

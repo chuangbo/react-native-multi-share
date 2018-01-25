@@ -12,10 +12,7 @@ import {
 
 import invariant from 'fbjs/lib/invariant';
 
-const {
-  MultiShare: NativeMultiShare,
-  ShareModule
-} = NativeModules;
+const { MultiShare: MultiShareModule } = NativeModules;
 
 class MultiShare {
 
@@ -60,7 +57,7 @@ class MultiShare {
       typeof successCallback === 'function',
       'Must provide a valid successCallback',
     );
-    NativeMultiShare.showShareActionSheetWithOptions(
+    MultiShareModule.showShareActionSheetWithOptions(
       {...options, tintColor: processColor(options.tintColor)},
       failureCallback,
       successCallback,
@@ -119,10 +116,10 @@ class MultiShare {
 
     if (Platform.OS === 'android') {
       invariant(
-        !content.title || typeof content.title === 'string',
-        'Invalid title: title should be a string.'
+        !content.title || typeof content.title === 'string' || Array.isArray(content.images),
+        'At least one of title and images is required.'
       );
-      return ShareModule.share(content, options.dialogTitle);
+      return MultiShareModule.share(content, options.dialogTitle);
     } else if (Platform.OS === 'ios') {
       return new Promise((resolve, reject) => {
         this.showShareActionSheetWithOptions(
