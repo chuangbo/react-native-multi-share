@@ -8,6 +8,17 @@ Drop-in replacement of react-native `Share` module, provides the ability to shar
 npm i react-native-multi-share --save
 ```
 
+```
+react-native link react-native-multi-share
+```
+
+#### Using CocoaPods
+
+```
+# Add to Podfile
+pod 'react-native-multi-share', :path => '../node_modules/react-native-multi-share'
+```
+
 ### Usage
 
 ```javascript

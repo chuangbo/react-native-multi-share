@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/chuangbo/react-native-multi-share.git"
   },
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Drop-in replacement of react-native `Share` module, provides the ability to share multiple images.",
   "author": "Chuangbo Li <im@chuangbo.li>",
   "nativePackage": true,
