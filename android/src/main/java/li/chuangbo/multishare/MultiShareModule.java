@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.content.FileProvider;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
