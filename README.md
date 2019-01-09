@@ -12,6 +12,46 @@ npm i react-native-multi-share --save
 react-native link react-native-multi-share
 ```
 
+#### Android
+
+* Follow this [guide](https://developer.android.com/training/secure-file-sharing/setup-sharing). For example:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+    <application
+        ...>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
+        ...
+    </application>
+</manifest>
+```
+
+* Create a `provider_paths ` under this directory: android/app/src/main/res/xml. In this file, add the following contents:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path
+        name="external_files"
+        path="." />
+    <files-path
+        name="files-path"
+        path="." /> <!-- Used to access into application data files -->
+</paths>
+```
+
+
 #### Using CocoaPods
 
 ```
@@ -29,42 +69,12 @@ async function onShare() {
 }
 ```
 
-### Common Issues
-
-#### Does not work android
-
-The images has to be copy to external storage, other apps cannot read your document folder.
-
-```js
-// Copy the files to the external storage
-import RNFetchBlob from 'react-native-fetch-blob';
-
-const fs = RNFetchBlob.fs;
-
-// Android Only
-async function getExternalCacheDirAsync() {
-  const dir = `${fs.dirs.SDCardApplicationDir}/cache`;
-  if (!await fs.isDir(dir)) {
-    await fs.mkdir(dir);
-  }
-  return dir;
-}
-
-export async function copyToExternalCacheDirAsync(from) {
-  const dir = await getExternalCacheDirAsync();
-  const filename = from.replace(/^.*[\\/]/, '');
-  const to = `${dir}/${filename}`;
-  await RNFetchBlob.fs.cp(from, to);
-  return to;
-}
-
-```
-
 ### Todos
 
 - [x] Test on react-native
 - [x] Test on detached expo.io project
 - [x] iOS
 - [x] Android
-- [ ] Pull request to react-native
+- [ ] ~~Pull request to react-native~~
 - [ ] Test using images along with other fields
+- [ ] Support more file types
