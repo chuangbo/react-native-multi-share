@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.content.FileProvider;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -69,6 +71,7 @@ public class MultiShareModule extends ReactContextBaseJavaModule {
         ReadableArray images = content.getArray("images");
         if (images.size() > 0 ) {
           this.addImagesToIntent(intent, images);
+          intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
       }
 
@@ -91,8 +94,12 @@ public class MultiShareModule extends ReactContextBaseJavaModule {
 
   protected void addImagesToIntent(Intent intent, ReadableArray images) {
     ArrayList<Uri> uriList = new ArrayList<>();
+
+    Context context = getReactApplicationContext();
+    String fileProviderAuthority = context.getPackageName() + ".fileprovider";
+
     for (int idx=0; idx < images.size(); idx++) {
-      uriList.add(Uri.fromFile(new File(images.getString(idx))));
+      uriList.add(FileProvider.getUriForFile(context, fileProviderAuthority, new File(images.getString(idx))));
     }
     intent.setAction(Intent.ACTION_SEND_MULTIPLE);
     intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
